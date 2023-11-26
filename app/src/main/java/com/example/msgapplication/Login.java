@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
                     userData.put("password", password.getText());
                 } catch (Exception e) {
                 }
-                conn.post("http://3.110.196.100/login", userData, new Connection.ExecuteNetResult() {
+                conn.post("http://13.235.95.222/login", userData, new Connection.ExecuteNetResult() {
                     @Override
                     public void run(JSONObject data) {
                         try {

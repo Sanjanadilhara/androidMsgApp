@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="start"
+    android:padding="6dp"
+    android:paddingEnd="55dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:textSize="16dp"
+        android:id="@+id/recMsgView"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp"
+        android:background="@drawable/recieved_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="this is thfgfg fg fgf g fg f g fg f gf gfgfgf gf gfgfg dfsg fg f gsfg fgfd gfd gf g f gde msg text"
+        />
+</LinearLayout>

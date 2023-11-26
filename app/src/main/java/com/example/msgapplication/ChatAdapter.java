@@ -1,5 +1,7 @@
 package com.example.msgapplication;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
-
+    private Activity activity;
     private Conversations dataList;
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
@@ -25,13 +27,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         private int dataListIndex;
 
 
-        public ChatViewHolder(View view) {
+        public ChatViewHolder(Activity mainActivity, View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             name=(TextView) view.findViewById(R.id.conName);
             lastMsg=(TextView) view.findViewById(R.id.lastMsg);
             profile=(Avatar) view.findViewById(R.id.consAvatar);
             card=(LinearLayout) view.findViewById(R.id.consCard);
+
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sendIntent = new Intent(mainActivity, ConversationView.class);
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    sendIntent.putExtra("index", dataListIndex);
+                    mainActivity.startActivity(sendIntent);
+                }
+            });
 
         }
 
@@ -41,7 +54,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     }
 
-    public ChatAdapter(Conversations data) {
+    public ChatAdapter(Activity act, Conversations data) {
+        activity=act;
         dataList=data;
     }
 
@@ -52,13 +66,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.chat_card, viewGroup, false);
 
-        return new ChatViewHolder(view);
+        return new ChatViewHolder(activity ,view);
     }
 
     @Override
     public void onBindViewHolder(ChatViewHolder viewHolder, final int position) {
         viewHolder.getName().setText(dataList.conversations.get(position).getName());
         viewHolder.getLastMsg().setText(dataList.conversations.get(position).getLastMessage());
+        viewHolder.dataListIndex=position;
 
     }
 

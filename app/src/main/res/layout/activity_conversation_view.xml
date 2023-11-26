@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ConversationView">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/conversationRecView"
+      />
+    <LinearLayout
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:background="@drawable/input"
+            android:padding="12dp"
+            android:id="@+id/message_to_send"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:ems="10"
+            android:lines="4"
+            android:minLines="1"
+            android:maxLines="4"
+            android:inputType="textMultiLine"
+            android:hint="Message"
+            android:layout_marginEnd="12dp"/>
+
+        <ImageButton
+            android:padding="12dp"
+            android:background="@drawable/image_button"
+            android:id="@+id/send_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/baseline_send_24"
+            android:scaleType="fitCenter"/>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>

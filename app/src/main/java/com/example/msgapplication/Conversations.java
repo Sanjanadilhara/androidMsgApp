@@ -5,8 +5,25 @@ import android.content.Context;
 import java.util.ArrayList;
 
 public class Conversations {
+
+    public ArrayList<EventListener> events=new ArrayList<>();
+    static interface EventListener{
+        public void onUpdate();
+    }
+    public void setUpdateListener(EventListener e){
+        events.add(e);
+    }
+    private static Conversations staticCons;
     public ArrayList<Conversation> conversations;
     private  String conFile="conversations";
+
+    public static synchronized Conversations getInstance(Context ctx){
+        if(staticCons == null){
+            staticCons=new Conversations(ctx);
+            System.out.println("null here");
+        }
+        return staticCons;
+    }
     Conversations(Context context){
         System.out.println("initilizing conversatiosns");
         conversations=new ArrayList<>();

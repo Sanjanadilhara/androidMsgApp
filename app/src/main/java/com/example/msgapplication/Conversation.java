@@ -5,11 +5,16 @@ package com.example.msgapplication;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Conversation {
 
-    public class Message{
+    public static class Message{
         public String Message;
         public boolean isSent;
         Message(String message, boolean issent){
@@ -34,12 +39,14 @@ public class Conversation {
         FileHandler.readFile(context, fileName, new FileHandler.Content() {
             @Override
             public void read(String line) {
-                String[] data=line.split(",");
-                boolean isSent=false;
-                if(data[1]=="1"){
-                    isSent=true;
+                System.out.println("reading line");
+                try{
+                    JSONObject msgData=new JSONObject(line);
+                    lastMessages.add(new Message(msgData.getString("msg"), msgData.getBoolean("sent")));
                 }
-                lastMessages.add(new Message(data[0], isSent));
+                catch (Exception e){
+
+                }
             }
         });
     }
@@ -48,4 +55,23 @@ public class Conversation {
         return name;
     }
     String getLastMessage(){return "last Message "+fileName;}
+    String getConversationId(){return conversationId;}
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        return conversationId.equals(obj)?true:false;
+//        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return conversationId.hashCode();
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return conversationId.toString();
+    }
 }
