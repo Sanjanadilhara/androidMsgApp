@@ -24,7 +24,7 @@ import okhttp3.WebSocketListener;
 
 public class WsService extends Service {
 
-    private WebSocketListener wsListener=new WebSocketListener() {
+    private  WebSocketListener wsListener=new WebSocketListener() {
         @Override
         public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
             super.onClosed(webSocket, code, reason);
@@ -40,7 +40,7 @@ public class WsService extends Service {
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
             System.out.println(text);
             try {
-                WsMessageHandler.handleIncommingMessages(new JSONObject(text), ctx);
+                WsMessageHandler.handleIncommingMessages(new JSONObject(text), getApplicationContext());
                 System.out.println("parse ok");
             }catch (Exception e){
                 System.out.println("fail to parse json");
@@ -50,7 +50,7 @@ public class WsService extends Service {
 
         @Override
         public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
-            WsMessageHandler.initializeConnection(ctx);
+            WsMessageHandler.initializeConnection(getApplicationContext());
             System.out.println("ws opened");
         }
     };
@@ -63,7 +63,6 @@ public class WsService extends Service {
         return wsConn;
     }
     private OkHttpClient client;
-    private Context ctx;
 
     public WsService() {
     }
@@ -90,7 +89,6 @@ public class WsService extends Service {
     @Override
     public void onCreate() {
 
-        ctx=getApplicationContext();
         client=new OkHttpClient();
 
         HandlerThread thread = new HandlerThread("msg-websocket");
