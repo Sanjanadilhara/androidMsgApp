@@ -1,4 +1,4 @@
-package com.example.msgapplication;
+package com.example.msgapplication.helpers;
 
 
 import android.app.Activity;
@@ -31,7 +31,7 @@ public class Connection {
     private Handler handler;
     private SharedPreferences cookieStore;
     private HandlerThread networkQueue;
-    Connection(Activity activity){
+    public Connection(Activity activity){
         mainActivity=activity;
         cookieStore=activity.getSharedPreferences("cookieStore", Context.MODE_PRIVATE);
         client=new OkHttpClient();

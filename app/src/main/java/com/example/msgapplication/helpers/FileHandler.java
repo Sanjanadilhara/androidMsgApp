@@ -1,4 +1,4 @@
-package com.example.msgapplication;
+package com.example.msgapplication.helpers;
 
 import android.content.Context;
 

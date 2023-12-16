@@ -5,13 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
+    <TextView
+        android:background="#55ddddff"
+        android:paddingVertical="15dp"
+        android:id="@+id/navChat"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:text="Chats" />
+    <TextView
+        android:paddingVertical="15dp"
+        android:textAlignment="center"
+        android:id="@+id/navReq"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Requests" />
+</LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/conversations"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainFragContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </LinearLayout>

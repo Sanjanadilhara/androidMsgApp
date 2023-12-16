@@ -1,4 +1,4 @@
-package com.example.msgapplication;
+package com.example.msgapplication.activities;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.msgapplication.helpers.Connection;
+import com.example.msgapplication.R;
 import com.example.msgapplication.cusViews.Spinner;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
@@ -50,7 +51,7 @@ public class Login extends AppCompatActivity {
                     userData.put("password", password.getText());
                 } catch (Exception e) {
                 }
-                conn.post("http://13.235.95.222/login", userData, new Connection.ExecuteNetResult() {
+                conn.post("http://192.168.171.21/login", userData, new Connection.ExecuteNetResult() {
                     @Override
                     public void run(JSONObject data) {
                         try {

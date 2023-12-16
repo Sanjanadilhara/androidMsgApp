@@ -2,29 +2,43 @@ package com.example.msgapplication;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.example.msgapplication.helpers.FileHandler;
+import com.example.msgapplication.models.ConRequest;
+import com.example.msgapplication.models.Conversation;
 
-public class Conversations {
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+public class GlobData {
 
     public ArrayList<EventListener> events=new ArrayList<>();
-    static interface EventListener{
+    public static interface EventListener{
         public void onUpdate();
+    }
+    public void updateViews(){
+        events.forEach(new Consumer<EventListener>() {
+            @Override
+            public void accept(EventListener eventListener) {
+                eventListener.onUpdate();
+            }
+        });
     }
     public void setUpdateListener(EventListener e){
         events.add(e);
     }
-    private static Conversations staticCons;
+    private static GlobData staticCons;
     public ArrayList<Conversation> conversations;
+    public ConRequest requests;
     private  String conFile="conversations";
 
-    public static synchronized Conversations getInstance(Context ctx){
+    public static synchronized GlobData getInstance(Context ctx){
         if(staticCons == null){
-            staticCons=new Conversations(ctx);
+            staticCons=new GlobData(ctx);
             System.out.println("null here");
         }
         return staticCons;
     }
-    Conversations(Context context){
+    GlobData(Context context){
         System.out.println("initilizing conversatiosns");
         conversations=new ArrayList<>();
         FileHandler.readFile(context, conFile, new FileHandler.Content() {
@@ -35,5 +49,7 @@ public class Conversations {
                 conversations.add(new Conversation(context, conData[0], conData[1], conData[2]));
             }
         });
+
+        requests=new ConRequest(context);
     }
 }

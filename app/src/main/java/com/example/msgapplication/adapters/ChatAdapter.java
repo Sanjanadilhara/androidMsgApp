@@ -1,4 +1,4 @@
-package com.example.msgapplication;
+package com.example.msgapplication.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.msgapplication.activities.ConversationView;
+import com.example.msgapplication.GlobData;
+import com.example.msgapplication.R;
 import com.example.msgapplication.cusViews.Avatar;
-
-import java.util.ArrayList;
 
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private Activity activity;
-    private Conversations dataList;
+    private GlobData dataList;
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
         private final TextView lastMsg;
@@ -54,15 +54,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     }
 
-    public ChatAdapter(Activity act, Conversations data) {
+    public ChatAdapter(Activity act, GlobData data) {
         activity=act;
         dataList=data;
     }
 
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
-
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.chat_card, viewGroup, false);
 
@@ -70,7 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ChatViewHolder viewHolder, int position) {
         viewHolder.getName().setText(dataList.conversations.get(position).getName());
         viewHolder.getLastMsg().setText(dataList.conversations.get(position).getLastMessage());
         viewHolder.dataListIndex=position;

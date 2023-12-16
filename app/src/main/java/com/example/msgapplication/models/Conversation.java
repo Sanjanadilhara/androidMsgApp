@@ -1,4 +1,4 @@
-package com.example.msgapplication;
+package com.example.msgapplication.models;
 
 
 
@@ -7,6 +7,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.msgapplication.helpers.FileHandler;
 
 import org.json.JSONObject;
 
@@ -17,7 +19,7 @@ public class Conversation {
     public static class Message{
         public String Message;
         public boolean isSent;
-        Message(String message, boolean issent){
+        public Message(String message, boolean issent){
             Message =message;
             isSent=issent;
         }
@@ -30,7 +32,7 @@ public class Conversation {
     public ArrayList<Message> lastMessages;
     private int numOfNonStoredMessages=0;
     Context context;
-    Conversation(Context ctx, String username, String conId, String filename){
+    public Conversation(Context ctx, String username, String conId, String filename){
         context=ctx;
         conversationId=conId;
         name=username;
@@ -51,11 +53,11 @@ public class Conversation {
         });
     }
 
-    String getName(){
+    public String getName(){
         return name;
     }
-    String getLastMessage(){return "last Message "+fileName;}
-    String getConversationId(){return conversationId;}
+    public String getLastMessage(){return "last Message "+fileName;}
+    public String getConversationId(){return conversationId;}
 
     @Override
     public boolean equals(@Nullable Object obj) {
