@@ -13,25 +13,37 @@ import com.example.msgapplication.helpers.FileHandler;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class Conversation {
 
     public static class Message{
         public String Message;
-        public boolean isSent;
+        public Boolean isSent;
         public Message(String message, boolean issent){
             Message =message;
             isSent=issent;
         }
 
+        public String toJSONString(){
+            return "{\"msg\":"+this.Message+", \"sent\":"+this.isSent.toString()+"}";
+        }
+
     }
-    private String conversationId;
-    private String name;
-    private String profile;
-    private String fileName;
-    public ArrayList<Message> lastMessages;
-    private int numOfNonStoredMessages=0;
-    Context context;
+    private String conversationId=null;
+    private String name=null;
+    private String profile=null;
+    private String fileName=null;
+    public ArrayList<Message> lastMessages=null;
+    private Integer numOfNonStoredMessages=null;
+    Context context=null;
+    public Conversation(String conId) {
+        this.conversationId = conId;
+    }
+
+
+
     public Conversation(Context ctx, String username, String conId, String filename){
         context=ctx;
         conversationId=conId;
@@ -56,24 +68,32 @@ public class Conversation {
     public String getName(){
         return name;
     }
-    public String getLastMessage(){return "last Message "+fileName;}
+    public String getLastMessage(){
+        return this.lastMessages.size()<=0?"There is no message yet":(this.lastMessages.get(this.lastMessages.size()-1).Message);
+    }
     public String getConversationId(){return conversationId;}
 
     @Override
     public boolean equals(@Nullable Object obj) {
-
-        return conversationId.equals(obj)?true:false;
-//        return super.equals(obj);
+        if(obj==null){
+            return false;
+        }
+        return this.conversationId.equals(((Conversation)obj).getConversationId());
     }
 
-    @Override
-    public int hashCode() {
-        return conversationId.hashCode();
+    public void saveData(Context ctx){
+        StringBuilder temMessages=new StringBuilder();
+        this.lastMessages.forEach(new Consumer<Message>() {
+            @Override
+            public void accept(Message message) {
+                temMessages.append(message.toJSONString());
+                temMessages.append("\n");
+            }
+        });
+        FileHandler.write(ctx, this.fileName, temMessages.toString(), false);
+    }
+    public String toSaveString(){
+        return this.name+","+this.conversationId+","+this.fileName;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return conversationId.toString();
-    }
 }

@@ -22,6 +22,13 @@ import okhttp3.Response;
 
 
 public class Connection {
+    private static Connection instace=null;
+    public static Connection getInstance(Activity activity){
+        if(instace==null){
+            instace=new Connection(activity);
+        }
+        return instace;
+    }
     public static interface ExecuteNetResult{
         public void run(JSONObject data);
     };
@@ -40,12 +47,13 @@ public class Connection {
         handler= new Handler(networkQueue.getLooper());
 
     }
-    public void get(String url, ExecuteNetResult resultExecutor){
+    public void get(String url,  ExecuteNetResult resultExecutor){
         JSONObject err=new JSONObject();
 
         Request request = new Request.Builder()
                 .url(url)
                 .header("Cookie", cookieStore.getString("cookies", ""))
+                .get()
                 .build();
         System.out.println(request.toString());
 
@@ -53,12 +61,14 @@ public class Connection {
             @Override
             public void run() {
                 try (Response response = client.newCall(request).execute()) {
-                    if(cookieStore.getString("cookies", "").isEmpty()) {
-                        cookieStore.edit().putString("cookies", response.header("set-cookie")).apply();
-                    }
-                    else{
-                        cookieStore.edit().putString("cookies", cookieStore.getString("cookies", "") +";"+ response.header("set-cookie")).apply();
+                    if(!response.header("set-cookie").isEmpty()){
+                        if(cookieStore.getString("cookies", "").isEmpty()) {
+                            cookieStore.edit().putString("cookies", response.header("set-cookie")).apply();
+                        }
+                        else{
+                            cookieStore.edit().putString("cookies", cookieStore.getString("cookies", "") +";"+ response.header("set-cookie")).apply();
 
+                        }
                     }
 
                     JSONObject dataToExec=new JSONObject(response.peekBody(response.body().contentLength()).string());
@@ -72,6 +82,7 @@ public class Connection {
                 }
                 catch (Exception e){
                     System.out.println("connection errr");
+                    System.out.println("Connection get(): "+e.toString());
                     resultExecutor.run(err);
                 }
             }
@@ -95,12 +106,14 @@ public class Connection {
             public void run() {
                 try (Response response = client.newCall(request).execute()) {
 
-                    if(cookieStore.getString("cookies", "").isEmpty()) {
-                        cookieStore.edit().putString("cookies", response.header("set-cookie")).apply();
-                    }
-                    else{
-                        cookieStore.edit().putString("cookies", cookieStore.getString("cookies", "") +";"+ response.header("set-cookie")).apply();
+                    if(response.header("set-cookie")!=null){
+                        if(cookieStore.getString("cookies", "").isEmpty()) {
+                            cookieStore.edit().putString("cookies", response.header("set-cookie")).apply();
+                        }
+                        else{
+                            cookieStore.edit().putString("cookies", cookieStore.getString("cookies", "") +";"+ response.header("set-cookie")).apply();
 
+                        }
                     }
 
 

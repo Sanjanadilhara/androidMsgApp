@@ -10,18 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
+import com.example.msgapplication.WsMessageHandler;
 import com.example.msgapplication.cusViews.Avatar;
-import com.example.msgapplication.models.ConRequest;
+import com.example.msgapplication.models.ConRequests;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder> {
     private Activity activity;
-    private ConRequest dataList;
+    private ConRequests dataList;
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
         private final TextView reqName;
         private final Button accept;
         private final Avatar reqProfile;
         private final Button delete;
+        private String fromId;
+        private String userName;
         private int dataListIndex;
 
 
@@ -32,6 +36,20 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             reqProfile=(Avatar) view.findViewById(R.id.reqAvatar);
             accept=(Button) view.findViewById(R.id.reqAccept);
             delete=(Button) view.findViewById(R.id.reqDel);
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GlobData.getInstance(mainActivity).requests.requests.remove(dataListIndex);
+                    GlobData.getInstance(mainActivity).updateViews();
+                }
+            });
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WsMessageHandler.sendAcceptRequest(mainActivity, fromId, userName, dataListIndex);
+                }
+            });
 
 
         }
@@ -56,9 +74,17 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         public void setDataListIndex(int dataListIndex) {
             this.dataListIndex = dataListIndex;
         }
+
+        public void setFromId(String fromId) {
+            this.fromId = fromId;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
     }
 
-    public RequestAdapter(Activity act, ConRequest data) {
+    public RequestAdapter(Activity act, ConRequests data) {
         activity=act;
         dataList=data;
     }
@@ -76,6 +102,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
         holder.getReqName().setText(dataList.requests.get(position).getName());
         holder.setDataListIndex(position);
+        holder.setFromId(dataList.requests.get(position).getUserId());
+        holder.setUserName(dataList.requests.get(position).getName());
     }
 
 
@@ -84,5 +112,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     public int getItemCount() {
         return dataList.requests.size();
     }
+
 }
 

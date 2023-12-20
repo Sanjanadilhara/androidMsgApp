@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
+import com.example.msgapplication.WsService;
 import com.example.msgapplication.adapters.ChatAdapter;
 
 /**
@@ -46,6 +47,7 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        WsService.startWS();
         conversationRecView=view.findViewById(R.id.conversations);
         chatAdapter=new ChatAdapter(getActivity(), GlobData.getInstance(getContext()));
         conversationRecView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -54,7 +56,7 @@ public class ChatsFragment extends Fragment {
         GlobData.getInstance(getContext()).setUpdateListener(new GlobData.EventListener() {
             @Override
             public void onUpdate() {
-                view.post(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         chatAdapter.notifyDataSetChanged();

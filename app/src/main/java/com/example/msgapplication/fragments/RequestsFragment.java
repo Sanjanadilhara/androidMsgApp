@@ -55,7 +55,7 @@ public class RequestsFragment extends Fragment {
         GlobData.getInstance(getContext()).setUpdateListener(new GlobData.EventListener() {
             @Override
             public void onUpdate() {
-                view.post(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         requestAdapter.notifyDataSetChanged();

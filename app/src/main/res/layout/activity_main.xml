@@ -30,11 +30,37 @@
         android:layout_weight="1"
         android:text="Requests" />
 </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mainFragContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_margin="20dp"
+            android:layout_gravity="bottom|right"
+            android:id="@+id/searchActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
+
+        <TextView
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:padding="2dp"
+            android:background="#88FF0000"
+            android:id="@+id/offlineNotify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:text="you are offline" />
+    </FrameLayout>
+
 
 
 </LinearLayout>

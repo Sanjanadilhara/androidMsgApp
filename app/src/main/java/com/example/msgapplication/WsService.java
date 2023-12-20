@@ -26,11 +26,6 @@ public class WsService extends Service {
 
     private  WebSocketListener wsListener=new WebSocketListener() {
         @Override
-        public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-            super.onClosed(webSocket, code, reason);
-        }
-
-        @Override
         public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
             System.out.println("ws fail");
             Log.e("System.out", "WebSocket failure: " + t.getMessage());
@@ -54,11 +49,11 @@ public class WsService extends Service {
             System.out.println("ws opened");
         }
     };
-    private  static WebSocket wsConn;
-    private static Handler wsHandler;
-    private static WsService instace;
+    private  static WebSocket wsConn=null;
+    private static OkHttpClient wsClient;
+    public static Boolean isAuthorized=false;
+    private static WsService instace=null;
     private String cookies;
-    public static Handler getHandler(){return wsHandler;}
     public static WebSocket getSocket(){
         return wsConn;
     }
@@ -67,38 +62,43 @@ public class WsService extends Service {
     public WsService() {
     }
 
-    public static void startWS(){
-        instace.initWS();
+    public static void closeWs(){
+        if(wsClient!=null){
+            wsClient.dispatcher().cancelAll();
+        }
+        wsConn=null;
+        isAuthorized=false;
+    }
+    public static boolean startWS(){
+        System.out.println("init strtws ............."+instace);
+
+        if(instace!=null){
+            instace.initWS();
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     public void initWS(){
+        System.out.println("init ws .............");
+        if(wsClient!=null && wsConn==null){
 
-        Request request = new Request.Builder()
-                .url("ws://192.168.171.21:80")
-                .build();
-        wsHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("in thread");
-                wsConn=client.newWebSocket(request, wsListener);
-
-            }
-        });
+            Request request = new Request.Builder()
+                    .url("ws://"+GlobData.serverAddress+":80")
+                    .build();
+            wsConn=wsClient.newWebSocket(request, wsListener);
+        }
 
     }
     @Override
     public void onCreate() {
 
-        client=new OkHttpClient();
-
-        HandlerThread thread = new HandlerThread("msg-websocket");
-        thread.start();
-        wsHandler=new Handler(thread.getLooper());
-        System.out.println("in service");
-
+        wsClient=new OkHttpClient();
         this.initWS();
-
-
+        instace=this;
     }
 
     @Override
@@ -106,6 +106,9 @@ public class WsService extends Service {
         return null;
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GlobData.getInstance(this).saveData(this);
+    }
 }
