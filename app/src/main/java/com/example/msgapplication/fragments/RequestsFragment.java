@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.adapters.RequestAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +48,10 @@ public class RequestsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
+
         reqRecyclerView=view.findViewById(R.id.requestRecView);
         requestAdapter=new RequestAdapter(getActivity(), GlobData.getInstance(getContext()).requests);
 

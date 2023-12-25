@@ -34,7 +34,7 @@ public class GlobData extends ConnectivityManager.NetworkCallback {
         this.updateViews(false);
     }
 
-    public static String serverAddress="192.168.142.21";
+    public static String serverAddress="13.235.59.111";
 
     public ArrayList<EventListener> events=new ArrayList<>();
     public ArrayList<NetStaEventListener> networkStatEvents=new ArrayList<>();
@@ -86,6 +86,7 @@ public class GlobData extends ConnectivityManager.NetworkCallback {
         }
         return staticCons;
     }
+
     GlobData(Context context){
         System.out.println("initilizing conversatiosns");
         conversations=new LinkedList<>();

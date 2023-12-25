@@ -27,7 +27,16 @@ public class WsMessageHandler {
                     GlobData.getInstance(ctx).conversations.get(GlobData.getInstance(ctx).conversations.indexOf(new Conversation(data.getString("from")))).lastMessages.add(new Conversation.Message(data.getString("message"), false));
                     GlobData.getInstance(ctx).updateViews();
                     break;
-                case "messageStat":
+                case "msgRespose":
+                    if(data.getInt("sent")==0){
+                        GlobData.getInstance(ctx).conversations.get(GlobData.getInstance(ctx).conversations.indexOf(new Conversation(data.getString("to"))))
+                                .lastMessages.get(data.getInt("msgId")).status=Conversation.MSG_SENT;
+                    }
+                    else if(data.getInt("sent")>0){
+                        GlobData.getInstance(ctx).conversations.get(GlobData.getInstance(ctx).conversations.indexOf(new Conversation(data.getString("to"))))
+                                .lastMessages.get(data.getInt("msgId")).status=Conversation.MSG_READ;
+                    }
+                    GlobData.getInstance(ctx).updateViews();
                     break;
                 case "init":
                     WsService.isAuthorized=data.getInt("stat")==1?true:false;

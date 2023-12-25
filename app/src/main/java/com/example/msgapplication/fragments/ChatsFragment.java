@@ -16,6 +16,8 @@ import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.WsService;
 import com.example.msgapplication.adapters.ChatAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +50,9 @@ public class ChatsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         WsService.startWS();
+
+
+
         conversationRecView=view.findViewById(R.id.conversations);
         chatAdapter=new ChatAdapter(getActivity(), GlobData.getInstance(getContext()));
         conversationRecView.setLayoutManager(new LinearLayoutManager(getContext()));

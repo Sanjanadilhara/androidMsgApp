@@ -1,14 +1,21 @@
 package com.example.msgapplication.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.msgapplication.adapters.FragmentsAdapter;
 import com.example.msgapplication.fragments.ChatsFragment;
 import com.example.msgapplication.fragments.RequestsFragment;
 import com.example.msgapplication.helpers.FileHandler;
@@ -17,96 +24,91 @@ import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.WsService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        SharedPreferences pref = this.getSharedPreferences("cookieStore", MODE_PRIVATE);
+//        pref.edit().putString("cookies", "").apply();
+        String cookies = pref.getString("cookies", "");
+        System.out.println("cooookies:  " + cookies);
+        if (cookies.isEmpty()) {
+            System.out.println(cookies);
+            Intent login = new Intent(this, Login.class);
+            startActivity(login);
+        } else {
+            if (!WsService.startWS()) {
+                System.out.println("strtService.......");
+                startService(new Intent(this, WsService.class));
+            }
+        }
+
+
         setContentView(R.layout.activity_main);
 
-        ConnectivityManager connMgr= (ConnectivityManager) getSystemService(ConnectivityManager.class);
+        Toolbar mainToolbar=findViewById(R.id.mainToolbar);
+        setSupportActionBar(mainToolbar);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(ConnectivityManager.class);
         connMgr.registerDefaultNetworkCallback(GlobData.getInstance(this));
 
-        TextView offlineNotify=findViewById(R.id.offlineNotify);
+        TextView offlineNotify = findViewById(R.id.offlineNotify);
         GlobData.getInstance(this).setNetStatUpdateListener(new GlobData.NetStaEventListener() {
             @Override
             public void onUpdate(boolean networkAvailable) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        offlineNotify.setVisibility(networkAvailable?View.GONE:View.VISIBLE);
+                        offlineNotify.setVisibility(networkAvailable ? View.GONE : View.VISIBLE);
                     }
                 });
             }
         });
 
-        TextView navChats=findViewById(R.id.navChat);
-        TextView navRequests=findViewById(R.id.navReq);
-        FloatingActionButton searchActionButton=(FloatingActionButton) findViewById(R.id.searchActionButton);
 
-        if(savedInstanceState==null){
-            navChats.setBackgroundColor(1440603647);
-            navRequests.setBackgroundColor(16777215);
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.mainFragContainer, ChatsFragment.class, new Bundle())
-                    .commit();
-        }
+        FloatingActionButton searchActionButton = (FloatingActionButton) findViewById(R.id.searchActionButton);
+        TabLayout tabs=findViewById(R.id.mainTabs);
+        ViewPager2 viewPager=findViewById(R.id.mainViewPager);
+
+        FragmentsAdapter pages=new FragmentsAdapter(getSupportFragmentManager(), getLifecycle());
+        pages.addFragment(new ChatsFragment(), "Chats");
+        pages.addFragment(new RequestsFragment(), "Requests");
 
 
+
+
+
+
+
+        viewPager.setAdapter(pages);
+        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+
+        new TabLayoutMediator(tabs, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(pages.titles.get(position));
+            }
+        }).attach();
 
         GlobData.getInstance(this);
 
-        navChats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navChats.setBackgroundColor(1440603647);
-                navRequests.setBackgroundColor(16777215);
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.to_right, R.anim.to_right_out)
-                        .setReorderingAllowed(true)
-                        .replace(R.id.mainFragContainer, ChatsFragment.class, new Bundle())
-                        .commit();
-
-            }
-        });
-        navRequests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navChats.setBackgroundColor(16777215);
-                navRequests.setBackgroundColor(1440603647);
-                getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.to_left, R.anim.to_left_out)
-                        .setReorderingAllowed(true)
-                        .replace(R.id.mainFragContainer, RequestsFragment.class, new Bundle())
-                        .commit();
-            }
-        });
 
         searchActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent search=new Intent(getApplicationContext(), Search.class);
+                Intent search = new Intent(getApplicationContext(), Search.class);
                 startActivity(search);
             }
         });
 
-
-        SharedPreferences pref=this.getSharedPreferences("cookieStore", MODE_PRIVATE);
-//        pref.edit().putString("cookies", "").apply();
-        String cookies=pref.getString("cookies", "");
-        System.out.println("cooookies:  "+cookies);
-        if (cookies.isEmpty()) {
-            System.out.println(cookies);
-            Intent login=new Intent(this, Login.class);
-            startActivity(login);
-        }
-        else{
-            startService(new Intent(this, WsService.class));
-        }
 
 //
 //        FileHandler.write(this, "conversations", "new user,65537225fbd8abae236abee2,chat505\n", true);
@@ -115,10 +117,6 @@ public class MainActivity extends AppCompatActivity {
 //        FileHandler.write(this, "conversations", "name name,4,chat4\n", true);
 //        FileHandler.write(this, "conversations", "another name,5,chat5\n", true);
 //        FileHandler.write(this, "conversations", "Another One,6,chat6\n", true);
-
-
-
-
 
 
 //
@@ -137,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 //        GlobData.getInstance(this).conversations.add(cc);
 
 
-
-
     }
 
     @Override
@@ -147,4 +143,11 @@ public class MainActivity extends AppCompatActivity {
         GlobData.getInstance(this).saveData(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_act_menu,menu);
+        return true;
+    }
 }

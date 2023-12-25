@@ -14,6 +14,7 @@ import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.WsMessageHandler;
 import com.example.msgapplication.cusViews.Avatar;
+import com.example.msgapplication.cusViews.ImageOfStr;
 import com.example.msgapplication.models.ConRequests;
 
 import java.util.ArrayList;
@@ -107,6 +108,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.setDataListIndex(position);
         holder.setId(dataList.get(position).getUserId());
         holder.setUserName(dataList.get(position).getName());
+        holder.getSearchProfile().setImageDrawable(new ImageOfStr(dataList.get(position).getName()));
 
         HashMap<String, ConRequests.Request> temGlobSentRequests=GlobData.getInstance(activity).requests.sentRequests;
 

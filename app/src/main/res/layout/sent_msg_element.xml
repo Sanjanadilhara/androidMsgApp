@@ -9,14 +9,31 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <FrameLayout
+        android:id="@+id/sentMsgBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <TextView
         android:textSize="16dp"
         android:id="@+id/sentMsgView"
         android:paddingHorizontal="10dp"
         android:paddingVertical="8dp"
-        android:background="@drawable/sent_msg"
+        android:layout_marginEnd="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="this is thfgfg fg fgf g fg f g fg f gf gfgfgf gf gfgfg dfsg fg f gsfg fgfd gfd gf g f gde msg text"
+        android:text="tfsg iiiiu uuuuuuuuuuuu uuuu uuu "
        />
+
+    <ImageView
+        android:padding="2dp"
+        android:id="@+id/sentMsgStat"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="right|bottom"
+        android:layout_marginEnd="3dp"
+        app:srcCompat="@drawable/double_tick" />
+
+    </FrameLayout>
+
+
 </LinearLayout>

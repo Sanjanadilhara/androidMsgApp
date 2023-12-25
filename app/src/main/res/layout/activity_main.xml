@@ -7,46 +7,54 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-<LinearLayout
+<androidx.appcompat.widget.Toolbar
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    app:title="Inst Messaging"
+    android:id="@+id/mainToolbar"
+    android:background="@color/primaryBackground"
+    android:elevation="4dp"
+    android:theme="@style/Theme.Material3.DayNight"/>
 
-    <TextView
-        android:background="#55ddddff"
-        android:paddingVertical="15dp"
-        android:id="@+id/navChat"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:layout_weight="1"
-        android:text="Chats" />
-    <TextView
-        android:paddingVertical="15dp"
-        android:textAlignment="center"
-        android:id="@+id/navReq"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="Requests" />
-</LinearLayout>
+
+<com.google.android.material.tabs.TabLayout
+    android:id="@+id/mainTabs"
+    android:layout_width="match_parent"
+    android:background="@color/primaryBackground"
+    app:tabTextColor="@color/tabTextDisabled"
+    app:tabIndicatorColor="@color/tabTextEnabled"
+    app:tabSelectedTextColor="@color/tabTextEnabled"
+    android:layout_height="wrap_content">
+    <com.google.android.material.tabs.TabItem
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="chat"/>
+      <com.google.android.material.tabs.TabItem
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="None"/>
+
+</com.google.android.material.tabs.TabLayout>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mainFragContainer"
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/mainViewPager"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_margin="20dp"
-            android:layout_gravity="bottom|right"
             android:id="@+id/searchActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="20dp"
             android:clickable="true"
+            android:backgroundTint="@color/primaryBackground"
             app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
 
         <TextView
@@ -59,6 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:text="you are offline" />
+
+
     </FrameLayout>
 
 

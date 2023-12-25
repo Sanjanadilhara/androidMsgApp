@@ -14,6 +14,7 @@ import com.example.msgapplication.activities.ConversationView;
 import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.cusViews.Avatar;
+import com.example.msgapplication.cusViews.ImageOfStr;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private GlobData dataList;
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
+
         private final TextView lastMsg;
         private final Avatar profile;
         private final LinearLayout card;
@@ -37,6 +39,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             profile=(Avatar) view.findViewById(R.id.consAvatar);
             card=(LinearLayout) view.findViewById(R.id.consCard);
 
+
+            profile.setImageDrawable(new ImageOfStr("!"));
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,9 +76,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(ChatViewHolder viewHolder, int position) {
 
-
         viewHolder.getName().setText(dataList.conversations.get(position).getName());
         viewHolder.getLastMsg().setText(dataList.conversations.get(position).getLastMessage());
+        viewHolder.getProfile().setImageDrawable(new ImageOfStr(dataList.conversations.get(position).getName()));
         viewHolder.dataListIndex=position;
 
     }

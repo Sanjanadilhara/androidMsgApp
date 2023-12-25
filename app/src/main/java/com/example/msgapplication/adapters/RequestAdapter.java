@@ -14,6 +14,7 @@ import com.example.msgapplication.GlobData;
 import com.example.msgapplication.R;
 import com.example.msgapplication.WsMessageHandler;
 import com.example.msgapplication.cusViews.Avatar;
+import com.example.msgapplication.cusViews.ImageOfStr;
 import com.example.msgapplication.models.ConRequests;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder> {
@@ -104,6 +105,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         holder.setDataListIndex(position);
         holder.setFromId(dataList.requests.get(position).getUserId());
         holder.setUserName(dataList.requests.get(position).getName());
+        holder.getReqProfile().setImageDrawable(new ImageOfStr(dataList.requests.get(position).getName()));
     }
 
 

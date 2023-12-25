@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/mi1"
+    android:title="fitem"/>
+    <item
+        android:id="@+id/mi2"
+        android:title="fitem"/>
+    <item
+        android:id="@+id/mi3"
+        android:title="fitem"/>
+    <item
+        android:id="@+id/mi4"
+        android:title="fitem"/>
+</menu>

@@ -2,8 +2,15 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MsgApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+         <item name="colorPrimary">@color/primary</item>
+         <item name="android:textColor">@color/black</item>
+         <item name="backgroundColor">@color/primary</item>
 
-    <style name="Theme.MsgApplication" parent="Base.Theme.MsgApplication" />
+    </style>
+    <item name="primaryBackground" type="color">@color/primary</item>
+    <item name="opposedBackground" type="color">@color/primaryDark</item>
+    <item name="tabTextDisabled" type="color">@color/primaryDarkDisabled</item>
+    <item name="tabTextEnabled" type="color">@color/black</item>
+    <item name="primaryTextColor" type="color">@color/black</item>
+
 </resources>

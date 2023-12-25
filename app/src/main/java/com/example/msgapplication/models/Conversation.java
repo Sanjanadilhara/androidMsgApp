@@ -18,16 +18,26 @@ import java.util.function.Consumer;
 
 public class Conversation {
 
+    public static int MSG_SENDING=0;
+    public static int MSG_SENT=1;
+    public static int MSG_READ=2;
+
     public static class Message{
         public String Message;
+        public Integer status=MSG_SENDING;
         public Boolean isSent;
         public Message(String message, boolean issent){
             Message =message;
             isSent=issent;
         }
+        public Message(String message, boolean issent, int status){
+            Message =message;
+            isSent=issent;
+            this.status=status;
+        }
 
         public String toJSONString(){
-            return "{\"msg\":"+this.Message+", \"sent\":"+this.isSent.toString()+"}";
+            return "{\"msg\":"+this.Message+", \"sent\":"+this.isSent.toString()+", \"status\":"+this.status.toString()+"}";
         }
 
     }
@@ -56,7 +66,7 @@ public class Conversation {
                 System.out.println("reading line");
                 try{
                     JSONObject msgData=new JSONObject(line);
-                    lastMessages.add(new Message(msgData.getString("msg"), msgData.getBoolean("sent")));
+                    lastMessages.add(new Message(msgData.getString("msg"), msgData.getBoolean("sent"), msgData.getInt("status")));
                 }
                 catch (Exception e){
 

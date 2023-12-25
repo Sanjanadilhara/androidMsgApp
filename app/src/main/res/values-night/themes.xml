@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MsgApplication" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.MsgApplication" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+         <item name="colorPrimary">@color/primaryDark</item>
+
+
+
     </style>
+    <item name="primaryBackground" type="color">@color/primaryDark</item>
+    <item name="opposedBackground" type="color">@color/primary</item>
+    <item name="tabTextDisabled" type="color">@color/white</item>
+    <item name="tabTextEnabled" type="color">@color/primary</item>
+    <item name="primaryTextColor" type="color">@color/white</item>
+
 </resources>
